@@ -1,32 +1,29 @@
 {
-  description = "My flake with all the important pieces of software (and eventually dotfiles).";
+  description = "Packages flake which installs the most commonly used software I need on all systems.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=unstable";
-    # nixgl.url = "github:guibou/nixGL";
-    # ghostty.url = "github:ghostty-org/ghostty";
-    # home-manager = {
-    #   url = "github:nix-community/home-manager";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    nixgl.url = "github:guibou/nixGL";
+    ghostty.url = "github:ghostty-org/ghostty";
   };
 
-  outputs.packages."x86_64-linux".default = let
-    pkgs = nixpkgs.legacyPackages."x86_64-linux";
-  in pkgs.buildEnv {
-    name = "my-packages";
-    paths = with pkgs; [
-          direnv
-          alacritty
-          # easyeffects
-          # foot
-          # foot.terminfo
-          # ghostty.packages.${system}ghostty
-          # nix-direnv
-          # nixgl.packages.${system}.nixGL
-          # pipewire
-          # waybar
-          # wireplumber
-    ];
-  };
+  outputs = { self, nixpkgs, flake-utils, nixgl, ghostty }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        packages = import ./packages.nix  { inherit pkgs; ghostty=ghostty; nixgl=nixgl; };
+      in {
+        packages = {
+          default = pkgs.buildEnv {
+            name = "tools";
+            paths = packages.common
+              ++ (if pkgs.stdenv.isLinux then packages.linux else [])
+              ++ (if pkgs.stdenv.isDarwin then packages.darwin else []);
+            pathsToLink = [ "/share/man" "/share/doc" "/bin" "/lib" ];
+            extraOutputsToInstall = [ "man" "doc" ];
+          };
+        };
+      }
+    );
 }
