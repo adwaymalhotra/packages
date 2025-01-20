@@ -20,8 +20,6 @@
             paths = packages.common
               ++ (if pkgs.stdenv.isLinux then packages.linux else [])
               ++ (if pkgs.stdenv.isDarwin then packages.darwin else []);
-            pathsToLink = [ "/share/man" "/share/doc" "/bin" "/lib" ];
-            extraOutputsToInstall = [ "man" "doc" ];
           };
         };
       }
