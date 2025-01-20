@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # steps before we run this:
 # 1. open browser and log into github, go to the dots repo
