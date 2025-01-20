@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+# steps before we run this:
+# 1. open browser and log into github, go to the dots repo
+# 2. download this file from .local/bin
+# 3. ssh-keygen and upload key to github
+
+# This script should ideally just be used once.
+# Subsequent runs will only update the submodules and install any packages newly added to the flake.
+
+[ ! -d "/nix" ] &&
+  yes | NIX_FIRST_BUILD_UID=50000 NIX_BUILD_GROUP_ID=50000 sh <(curl -L https://nixos.org/nix/install) --daemon
+
+mkdir -p $HOME/.local/opt/git
+mkdir -p $HOME/.local/opt/apps
+alias dots='/usr/bin/git --git-dir=$HOME/.local/opt/dots/ --work-tree=$HOME'
+
+# initialise dotfiles
+if [ -d "$HOME/.local/opt/dots" ]; then
+  dots pull --autostash
+else
+  git clone --bare git@github.com:adwaymalhotra/dots.git $HOME/.local/opt/dots
+  dots config remote.origin.fetch +refs/heads/main:refs/remotes/origin/main
+  dots config remote.origin.rebase main
+  dots config branch.main.remote origin
+  dots config branch.main.merge refs/heads/main
+
+  mkdir -p .config-backup &&
+    dots checkout 2>&1 | egrep "\s+\." | awk {'print $1'} |
+    xargs -I{} mv {} .config-backup/{}
+  dots reset --hard
+fi
+source ~/.zshrc
+
+# initialise fonts, zmk, zmk_batt and flake submodules
+dots submodule update --init
+fc-cache -f
+
+sudo apt install libssl-dev python3 python3-pip libsecret-tools lua5.4
+
+nix profile install $HOME/.local/opt/packages-flake
+
+loginctl enable-linger $USER
+set-theme pinegrey
