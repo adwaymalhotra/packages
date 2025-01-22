@@ -43,4 +43,4 @@ sudo apt install libssl-dev python3 python3-pip libsecret-tools lua5.4
 nix profile install $HOME/.local/opt/packages-flake
 
 loginctl enable-linger $USER
-set-theme pinegrey
+set-theme pine

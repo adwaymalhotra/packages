@@ -24,21 +24,34 @@ in {
     zellij
     zoxide
 
-    # can't install ghostty from nixpkgs, and the git flake builds a version which complains about EGL
-    # needs to be run using `nixGL`
-    # ghostty.packages.${system}.ghostty
+    ghostty.packages.${system}.ghostty
+
+    # toolchains
+    cargo
+    rustc
+    rust-analyzer
   ];
   linux = with pkgs; [
     easyeffects
     foot
     foot.terminfo
 
+    grim
+    hypridle
+    # hyprpaper # segfaults on work system with or without nixGL.
+    swww
     kanata
     mako
-    niri
     pipewire
+    rofi-wayland
+    slurp
+    # swaylock # red screen after unlock; seems to be fixed at HEAD; build from source for now.
+    # swaylock-effects
     wireplumber
     waybar
+
+    # niri # (doesn't seem to work with the systemd hook in .config; seems to be some opengl issues)
+    # can't seem to install using this path
     # nixgl.packages.${system}.nixGL
   ];
   darwin = with pkgs; [];
