@@ -36,6 +36,7 @@ in {
     foot
     foot.terminfo
 
+    brightnessctl
     grim
     hypridle
     hyprpicker
