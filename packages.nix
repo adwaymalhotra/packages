@@ -40,14 +40,14 @@ in {
     grim
     hypridle
     hyprpicker
-    # hyprpaper # segfaults on work system with or without nixGL.
-    swww
+    imv
     kanata
     mako
     pipewire
     rofi-wayland
     slurp
     # swaylock # red screen after unlock; seems to be fixed at HEAD; build from source for now.
+    swww
     wireplumber
     waybar
     xwayland-satellite
@@ -58,11 +58,3 @@ in {
   ];
   darwin = with pkgs; [];
 }
-
-# Packages from home-manager
-    # home-manager.packages.${system}.home-manager
-
-    # Build ghostty from source until the nix package is fixed
-
-    # Build nixGL
-    # nixgl.packages.${system}.nixGL
