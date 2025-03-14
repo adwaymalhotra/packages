@@ -21,6 +21,7 @@ in {
     ripgrep-all
     starship
     stylua
+    yazi
     zellij
     zoxide
 
@@ -43,6 +44,7 @@ in {
     imv
     kanata
     mako
+    nwg-look
     pipewire
     rofi-wayland
     slurp
