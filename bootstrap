@@ -44,3 +44,7 @@ nix profile install $HOME/.local/opt/packages-flake
 
 loginctl enable-linger $USER
 set-theme pine
+
+# install rust automatically
+[ ! -d "$HOME/.cargo" ] &&
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
