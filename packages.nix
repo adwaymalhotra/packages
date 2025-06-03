@@ -39,6 +39,7 @@ in {
     # swaylock # red screen after unlock; seems to be fixed at HEAD; build from source for now.
     swww
     waybar
+    swaynotificationcenter
 
     nixgl.packages.${system}.nixGLIntel
 
