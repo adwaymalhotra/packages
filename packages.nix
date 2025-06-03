@@ -12,6 +12,7 @@ in {
     fd
     fzf
     helix
+    ktfmt
     lutgen
     macchina
     nix-direnv
