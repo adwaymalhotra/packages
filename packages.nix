@@ -19,7 +19,7 @@ in {
     neovim
     ripgrep
     ripgrep-all
-    sd-find-replace
+    sd
     starship
     stylua
     yazi
