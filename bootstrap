@@ -38,12 +38,10 @@ source ~/.zshrc
 dots submodule update --init
 fc-cache -f
 
-sudo apt install libssl-dev python3 python3-pip libsecret-tools lua5.4
+# need to add a fuse backend for appimages
+sudo apt install libssl-dev python3 python3-pip libsecret-tools lua5.4 libplayerctl2-dev playerctl git cmake libwayland-dev libpam libxcb-cursor-dev
 
 nix profile install $HOME/.local/opt/packages-flake
-
-# install nixgl which brings the opengl dependencies for nix GUI apps into the path.
-nix profile install github:guibou/nixGL --impure
 
 loginctl enable-linger $USER
 set-theme pine
