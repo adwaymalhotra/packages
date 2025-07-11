@@ -9,15 +9,26 @@
 # Subsequent runs will only update the submodules and install any packages newly added to the flake.
 
 echo "Starting bootstrap process..."
+
+install_cmd="apt install"
+packages="libssl-dev python3 python3-pip libsecret-tools lua5.4 libplayerctl2-dev playerctl cmake libwayland-dev libpam libxcb-cursor-dev iwd bison flex udiskie xournal powertop libfuse2t64 libfuse3-dev"
+system="debian"
+if type "apt" >/dev/null; then
+  install_cmd="apt install"
+  system="debian"
+elif type "pacman" >/dev/null; then
+  install_cmd="pacman -S"
+  system="arch"
+  # TODO: Add a list corresponding to arch here. We want to install broadly the same set of software in Arch. Since Arch
+  # probably has the latest software already, we might not need nix involved at all.
+fi
+
 sudo apt install git
 
 confirmation="n"
 while true; do
   if read -q "choice?Have you registered the ssh key on GitHub? (y/n): "; then break; else echo; fi
 done
-
-[ ! -d "/nix" ] &&
-  yes | NIX_FIRST_BUILD_UID=50000 NIX_BUILD_GROUP_ID=50000 sh <(curl -L https://nixos.org/nix/install) --daemon
 
 mkdir -p $HOME/.local/opt/git
 mkdir -p $HOME/.local/opt/apps
@@ -44,10 +55,14 @@ source ~/.zshrc
 dots submodule update --init
 fc-cache -f
 
-# need to add a fuse backend for appimages
-sudo apt install libssl-dev python3 python3-pip libsecret-tools lua5.4 libplayerctl2-dev playerctl cmake libwayland-dev libpam libxcb-cursor-dev iwd bison flex udiskie xournal powertop
+sudo $install_cmd $packages
 
-nix profile install $HOME/.local/opt/packages-flake
+if [ ! $system=="arch" ]; then
+  [ ! -d "/nix" ] &&
+    yes | NIX_FIRST_BUILD_UID=50000 NIX_BUILD_GROUP_ID=50000 sh <(curl -L https://nixos.org/nix/install) --daemon
+
+  nix profile install $HOME/.local/opt/packages-flake
+fi
 
 loginctl enable-linger $USER
 set-theme mellow

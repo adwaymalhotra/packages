@@ -33,13 +33,16 @@ in {
     foot.terminfo
 
     brightnessctl
+    bzmenu
     cliphist
     hypridle
     hyprpicker
     imv
+    iwmenu
     kanata
     mako
-    rofi-wayland
+    # rofi # doesn't behave well with locales and doesn't seem to provide the correct environment for Flatpak apps.
+    # rofi-wayland
     # swaylock # red screen after unlock; seems to be fixed at HEAD; build from source for now.
     swaynotificationcenter
     swww
@@ -51,6 +54,7 @@ in {
     # System services which are out of date on Debian
     pipewire
     wireplumber
+    # glibcLocales # seems to be required for rofi which fails to find locale without this
   ];
   linux-gui = with pkgs; [
     neovide
