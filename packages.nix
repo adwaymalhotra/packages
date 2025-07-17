@@ -1,4 +1,4 @@
-{ pkgs, nixgl }:
+{ pkgs }:
 
 let
   system = pkgs.system;
@@ -13,7 +13,8 @@ in {
     fzf
     helix
     ktfmt
-    # luarocks # simpler to install it here.
+    lf
+    luarocks # simpler to install it here.
     lutgen
     macchina
     nix-direnv
@@ -40,28 +41,21 @@ in {
     imv
     iwmenu
     kanata
-    mako
-    # rofi # doesn't behave well with locales and doesn't seem to provide the correct environment for Flatpak apps.
-    # rofi-wayland
     # swaylock # red screen after unlock; seems to be fixed at HEAD; build from source for now.
     swaynotificationcenter
     swww
     waybar
     wl-clipboard
 
-    # nixgl.packages.${system}.nixGLDefault
-
     # System services which are out of date on Debian
     pipewire
     wireplumber
     # glibcLocales # seems to be required for rofi which fails to find locale without this
-  ];
-  linux-gui = with pkgs; [
+
+    # HW accelerated (require nixGL - to be installed separately)
     neovide
     nwg-look
-    # ghostty # this just seems to hog CPU time a lot. Probably an issue with nixGL.
     wdisplays
-    # niri # I haven't been able to get this running via nix. local builds are still king.
   ];
   darwin = with pkgs; [
     ghostty

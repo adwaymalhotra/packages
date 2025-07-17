@@ -21,6 +21,7 @@ elif type "pacman" >/dev/null; then
   system="arch"
   # TODO: Add a list corresponding to arch here. We want to install broadly the same set of software in Arch. Since Arch
   # probably has the latest software already, we might not need nix involved at all.
+  # It is generally easier to maintain software using the system's package manager.
 fi
 
 sudo apt install git
